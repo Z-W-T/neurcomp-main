@@ -32,7 +32,8 @@ class SineLayer(nn.Module):
     def forward(self, input):
         relu = nn.ReLU(inplace = true)
         # return 0.5*(th.sin(self.omega_0 * self.linear(input)) + relu(self.omega_0 * self.linear(input)))
-        return th.sin(self.omega_0 * self.linear(input))
+        # return th.sin(self.omega_0 * self.linear(input))
+        return relu(self.omega_0 * self.linear(input))
     #
 #
 
@@ -69,7 +70,8 @@ class ResidualSineLayer(nn.Module):
         relu1 = relu(self.omega_0 * self.linear_1(self.weight_3*input))
         relu2 = relu(self.omega_0 * self.linear_2(relu1))
         # return 0.5*(self.weight_2*(input+sine_2) + self.weight_4*(input+relu2))
-        return self.weight_2*(input+sine_2)
+        # return self.weight_2*(input+sine_2)
+        return self.weight_4*(input+relu2)
     #
 #
 
