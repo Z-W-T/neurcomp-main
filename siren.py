@@ -33,7 +33,8 @@ class SineLayer(nn.Module):
         relu = nn.ReLU(inplace = true)
         # return 0.5*(th.sin(self.omega_0 * self.linear(input)) + relu(self.omega_0 * self.linear(input)))
         # return th.sin(self.omega_0 * self.linear(input))
-        return relu(self.omega_0 * self.linear(input))
+        # return relu(self.omega_0 * self.linear(input))
+        return nn.Sigmoid(self.omega_0 * self.linear(input))
     #
 #
 
@@ -49,7 +50,7 @@ class ResidualSineLayer(nn.Module):
         self.weight_1 = .5 if ave_first else 1
         self.weight_2 = .5 if ave_second else 1
         self.weight_3 = .5 if ave_third else 1
-        self.weight_4 = .5 if ave_third else 1
+        self.weight_4 = .5 if ave_forth else 1
 
         self.init_weights()
     #
@@ -69,9 +70,12 @@ class ResidualSineLayer(nn.Module):
         relu = nn.ReLU(inplace = true)
         relu1 = relu(self.omega_0 * self.linear_1(self.weight_3*input))
         relu2 = relu(self.omega_0 * self.linear_2(relu1))
+        sig1 = nn.Sigmoid(self.omega_0 * self.linear_1(self.weight_3*input))
+        sig2 = nn.Sigmoid(self.omega_0 * self.linear_2(sig1))
         # return 0.5*(self.weight_2*(input+sine_2) + self.weight_4*(input+relu2))
         # return self.weight_2*(input+sine_2)
-        return self.weight_4*(input+relu2)
+        # return self.weight_4*(input+relu2)
+        return self.weight2*(input+sig2)
     #
 #
 
